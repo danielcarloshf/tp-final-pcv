@@ -1,0 +1,39 @@
+# Trabalho Prático de Pesquisa Operacional - DCC UFMG
+# Disciplina: DCC035 - Pesquisa Operacional
+#
+# Modelagem para o Problema de Cobertura de Vértices Mínima.
+#
+# Alunos: Álvaro Antônio Fonseca de Souza,
+#         Daniel Carlos Hovadick Félix,
+#         Guilherme Gonzaga Barbosa.
+#     
+# Data: 16/06/2015.
+
+# Número de vértices
+param I;
+
+# Conjunto de arestas
+set A, dimen 2;
+
+# Custo de cada vértice
+param c{i in 1..I};
+
+# Verifica se o vértice i está na solução
+var x{i in 1..I}, binary;
+
+# Restrição pelo menos um vértice de (i,j) está na solução
+s.t. cov{(i,j) in A}: x[i] + x[j] >= 1;
+
+# Objetivo
+minimize z: sum{i in 1..I} c[i] * x[i];
+
+solve;
+
+# Imprime resultados
+printf "\n\nVertices na solucao:\n";
+for {i in 1..I: x[i] = 1}
+  printf "%d ", (i);
+printf "\n\nVértices na solução: %d", (sum{i in 1..I} x[i]);
+printf "\n\nCusto total: %d\n\n", (z);
+
+end;
